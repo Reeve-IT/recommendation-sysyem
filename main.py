@@ -25,5 +25,42 @@ merged_df=merged_df.dropna()
 #clean structure
 merged_df=merged_df.reset_index(drop=True)
 
-print(merged_df.head())
-print(merged_df.shape)
+# print(merged_df.head())
+# print(merged_df.shape)
+
+import ast
+#convert string into list
+merged_df['genres']=merged_df['genres'].apply(ast.literal_eval)
+merged_df['keywords']=merged_df['keywords'].apply(ast.literal_eval)
+merged_df['cast']=merged_df['cast'].apply(ast.literal_eval)
+merged_df['crew']=merged_df['crew'].apply(ast.literal_eval)
+
+#extracting names 
+def extract_names(obj):
+  names=[]
+  for i in obj:
+    names.append(i['name'])
+  return names
+
+merged_df['genres']=merged_df['genres'].apply(extract_names)
+merged_df['keywords']=merged_df['keywords'].apply(extract_names)
+
+#extracting top cast
+def extract_top_cast(obj):
+  names=[]
+  for i in obj[:3]:#top 3 actors
+     names.append(i['name'])
+  return names
+
+merged_df['cast']=merged_df['cast'].apply(extract_top_cast)
+
+#extract director name
+def fetch_director(obj):
+  names=[]
+  for i in obj:
+    if i['job']=='Director':
+      return[i['name']]
+  return[]
+merged_df['crew']=merged_df['crew'].apply(fetch_director)
+
+print(merged_df[['genres','keywords','cast','crew']].head())
