@@ -89,3 +89,24 @@ new_df=merged_df[['movie_id','title','tags']]
 
 #convert into lower case 
 new_df['tags']=new_df['tags'].apply(lambda x: x.lower())
+
+#convert text into vectors
+from sklearn.feature_extraction.text import CountVectorizer
+cv=CountVectorizer(max_features=5000, stop_words='english')
+vectors=cv.fit_transform(new_df['tags']).toarray()
+
+#similirity calculation 
+from sklearn.metrics.pairwise import cosine_similarity
+similarity=cosine_similarity(vectors)
+
+#main function 
+def recommend(movie):
+  movie_index=new_df[new_df['title']==movie].index[0]
+  distances=similarity[movie_index]
+
+  movie_list=sorted(list(enumerate(distances)),reverse=True,key=lambda x: x[1])[1:6]
+
+  for i in movie_list:
+     print(new_df.iloc[i[0]].title)
+       
+recommend("Batman Begins")
