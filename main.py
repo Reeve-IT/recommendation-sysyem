@@ -1,4 +1,3 @@
-#first activate venv by .\venv\Scripts\Activate
 
 import pandas as pd
 
@@ -99,14 +98,26 @@ vectors=cv.fit_transform(new_df['tags']).toarray()
 from sklearn.metrics.pairwise import cosine_similarity
 similarity=cosine_similarity(vectors)
 
-#main function 
+ 
+#improved function
 def recommend(movie):
-  movie_index=new_df[new_df['title']==movie].index[0]
+  movie=movie.lower()
+
+  #check if movie exists
+  if movie not in new_df['title'].str.lower().values:
+    return["Movie not Found"]
+
+  #get index safely
+  movie_index=new_df[new_df['title'].str.lower()==movie].index[0]
+
   distances=similarity[movie_index]
 
   movie_list=sorted(list(enumerate(distances)),reverse=True,key=lambda x: x[1])[1:6]
 
+  recommendations=[]
   for i in movie_list:
-     print(new_df.iloc[i[0]].title)
+    recommendations.append(new_df.iloc[i[0]].title)
+  
+  return recommendations
        
-recommend("Batman Begins")
+print(recommend("Avatar"))
