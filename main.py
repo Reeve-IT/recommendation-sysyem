@@ -120,4 +120,70 @@ def recommend(movie):
   
   return recommendations
        
-print(recommend("Avatar"))
+# print(recommend("Avatar"))
+
+import nltk
+from nltk.stem.porter import PorterStemmer
+
+ps=PorterStemmer()
+
+#ceate steaming function
+def stem(text):
+  y=[]
+
+  for i in text.split():
+    y.append(ps.stem(i))
+
+  return " ".join(y)
+
+#apply steamming to tags
+new_df['tags']=new_df['tags'].apply(stem)
+
+#rebuild
+from sklearn.feature_extraction.text import CountVectorizer
+
+cv=CountVectorizer(max_features=5000, stop_words='english')
+vectors=cv.fit_transform(new_df['tags']).toarray()
+
+from sklearn.metrics.pairwise import cosine_similarity
+similarity=cosine_similarity(vectors)
+
+# print(recommend("toy story"))
+# print(recommend("inception"))
+
+#remove overview from tags
+merged_df['tags']=merged_df['genres']+merged_df['keywords']+merged_df['cast']+merged_df['crew']
+
+#convert list into string
+new_df=merged_df[['movie_id','title','tags']]
+new_df['tags']=new_df['tags'].apply(lambda x:" ".join(x))
+
+#lower case
+new_df['tags']=new_df['tags'].apply(lambda x: x.lower())
+
+new_df['tags']=new_df['tags'].apply(stem)
+
+from sklearn.feature_extraction.text import CountVectorizer
+
+cv=CountVectorizer(max_features=5000, stop_words='english')
+vectors=cv.fit_transform(new_df['tags']).toarray()
+
+from sklearn.metrics.pairwise import cosine_distances
+similarity=cosine_similarity(vectors)
+
+# print(recommend("toy story"))
+# print(recommend("inception"))
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+#create object
+tfidf=TfidfVectorizer(max_features=5000, stop_words='english')
+#convert text to vectors
+vectors=tfidf.fit_transform(new_df['tags']).toarray()
+
+from sklearn.metrics.pairwise import cosine_similarity
+similarity=cosine_similarity(vectors)
+
+
+print(recommend("toy story"))
+print(recommend("inception"))
