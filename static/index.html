@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CineMatch • Movie Recommendations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <main class="app">
+    <!-- Background elements -->
+    <div class="bg-gradient"></div>
+    <div class="bg-noise"></div>
+
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <h1 class="app-title">CineMatch</h1>
+        <p class="app-subtitle">Discover movies you'll love</p>
+      </div>
+    </header>
+
+    <!-- Main content container -->
+    <div class="container">
+      <!-- Search section -->
+      <section class="search-section">
+        <form id="search-form" class="search-form">
+          <div class="search-input-wrapper">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.35-4.35"></path>
+            </svg>
+            <input 
+              id="movie-query" 
+              name="movie-query" 
+              type="text" 
+              placeholder="Search a movie title..."
+              autocomplete="off"
+              class="search-input"
+            />
+            <datalist id="movie-titles"></datalist>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <span>Find Similar</span>
+          </button>
+        </form>
+        <p id="status" class="status-text">Enter a movie title to find recommendations</p>
+      </section>
+
+      <!-- Quick picks section -->
+      <section class="quick-picks-section" id="quick-picks-container">
+        <div class="section-label">
+          <svg class="label-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+          </svg>
+          <h2>Quick Picks</h2>
+        </div>
+        <div id="quick-picks" class="chips-container"></div>
+      </section>
+
+      <!-- Featured matched movie section -->
+      <section class="featured-section" id="featured-section" style="display: none;">
+        <div id="featured-card" class="featured-card"></div>
+      </section>
+
+      <!-- Results section -->
+      <section class="results-section">
+        <div class="section-header">
+          <div class="section-label">
+            <svg class="label-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="7" width="20" height="15" rx="2.18" ry="2.18"></rect>
+              <line x1="16" y1="2" x2="16" y2="12"></line>
+              <line x1="8" y1="2" x2="8" y2="12"></line>
+              <line x1="4" y1="12" x2="20" y2="12"></line>
+            </svg>
+            <h2>Recommendations</h2>
+          </div>
+          <p id="matched-title" class="matched-info"></p>
+        </div>
+        <div id="results" class="results-grid"></div>
+      </section>
+    </div>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
